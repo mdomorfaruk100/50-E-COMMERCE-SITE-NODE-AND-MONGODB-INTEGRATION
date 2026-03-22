@@ -1,33 +1,25 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import fakeData from '../../fakeData/fakeData';
+import Product from '../Product/Product';
 
-class ProductDetail extends Component {
-    constructor(params) {
-        super(params);
-        this.state = {
-            count: 0
-        }
-    }
+const ProductDetail = () => {
+    const {key} = useParams();
+    const product = fakeData.find(product => product.key === key);
+    // const [product, setProduct] = useState({});
+    useEffect(()=>{
+        fetch("/src/fakeData/fakeData.json").then(res => res.json())
+        .then(data => console.log(data))
+        // const loadedProduct = fakeData.find(product => product.key === key);
+        // setProduct(loadedProduct);
+    }, []);
 
-    // it is used to loaddata
-    componentDidMount(){
-        fetch('')
-        .then(data => data.json())
-        .then(products => {
-            this.setState({products: products});
-        })
-    }
-
-    handleClick(){
-        const newCount = this.state.count + 1;
-        this.setState({count: newCount});
-    }
-    render() {
-        return (
-            <div>
-                
-            </div>
-        );
-    }
-}
+    return (
+        <div>
+        <h1>Your Product Details.</h1>
+           <Product product={product} showAddToCart={false} /> 
+        </div>
+    );
+};
 
 export default ProductDetail;
