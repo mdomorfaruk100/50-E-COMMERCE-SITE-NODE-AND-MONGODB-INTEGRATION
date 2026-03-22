@@ -29,7 +29,7 @@ const Header = () => {
                 {/* <Link to='/shop'>Shop</Link> */}
                 <a href='/shop'>Shop</a>
                 <Link to='/review'>Order Review</Link>
-                <Link to='/orders'>Order History</Link>
+                <Link to='/inventory'>Manage Inventory</Link>
                 {
                     loggedInUser.email && <span style={{color: 'yellow'}}>Welcome, {loggedInUser.name}</span>
                 }

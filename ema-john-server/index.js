@@ -20,12 +20,13 @@ const client = new MongoClient(uri, {
 });
 
 client.connect().then(connectedClient => {
-    const products = client.db(process.env.DB_NAME).collection("devices")
+    const productCollection = client.db(process.env.DB_NAME).collection("products");
+
     app.post('/addProducts', (req, res) => {
-        const product = req.body;
-        products.insertOne(req.body)
+        const products = req.body;
+        productCollection.insertMany(products)
         .then(result => {
-            console.log(result);
+            res.send(result);
         })
     })
 })
