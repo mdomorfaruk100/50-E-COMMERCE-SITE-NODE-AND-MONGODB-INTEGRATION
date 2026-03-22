@@ -28,7 +28,6 @@ function App() {
           <Route path='/product/:key' Component={ProductDetail} />
           <Route path='/login' Component={Login} />
           <Route path='*' Component={NotFound} />
-          <Route path='*' Component={NotFound} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
