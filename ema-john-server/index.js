@@ -2,6 +2,7 @@ const express = require("express");
 const {MongoClient, ServerApiVersion} = require("mongodb");
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const multer = require('multer');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000; 
@@ -10,6 +11,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.34pe2jg.mongodb.net/${process.env.DB_NAME}`
+
+
 
 const client = new MongoClient(uri, {
     serverApi: {
@@ -22,7 +25,7 @@ const client = new MongoClient(uri, {
 client.connect().then(connectedClient => {
     const productCollection = client.db(process.env.DB_NAME).collection("products");
 
-    app.post('/addProducts', (req, res) => {
+    app.post('/addProduct', (req, res) => {
         const products = req.body;
         productCollection.insertMany(products)
         .then(result => {

@@ -2,10 +2,10 @@ import React from 'react';
 
 const Inventory = () => {
     const handleAddProduct = async () => {
-        const products = await fetch("/src/fakeData/fakeData.json").then(res => res.json());
-        fetch('http://localhost:3000/addProducts', {
+        const product = {};
+        fetch('http://localhost:3000/addProduct', {
             method: "POST",
-            body: JSON.stringify(products),
+            body: JSON.stringify(product),
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -16,7 +16,13 @@ const Inventory = () => {
     }
     return (
         <div>
+        <form>
+        <p><span>Name: </span><input type="text" /></p>
+        <p><span>Price: </span><input type="text" /></p>
+        <p><span>Quantity: </span><input type="text" /></p>
+        <p><span>Product Image</span><input type="file" /></p>
             <button onClick={handleAddProduct}>Add Product</button>
+        </form>
         </div>
     );
 };
