@@ -21,14 +21,14 @@ const Shop = () => {
     useEffect(() => {
         const savedCart = getDataBaseCart();
         const productKeys = Object.keys(savedCart);
-        if(products.length){
-                    const previousCart = productKeys.map(existingKey => {
-            const product = products.find(pd => pd.key === existingKey);
-            product.quantity = savedCart[existingKey];
-            return product;
-        })
-        setCart(previousCart)
-        }
+               fetch('http://localhost:3000/productsByKeys', {
+            method: 'POST',
+            body: JSON.stringify(productKeys),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json())
+        .then(data => setCart(data));
     }, [products]);
 
     const handleAddToCart = (product) => {

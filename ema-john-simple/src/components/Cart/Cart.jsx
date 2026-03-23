@@ -3,7 +3,8 @@ import React from 'react';
 const Cart = props => {
     const {cart} = props;
     const totalPrice = cart.reduce((total, product) => total + product.price, 0)
-    const totalQuanity = cart.reduce((total, product)=> total + product.quantity ,0);
+    const totalQuanity = cart.reduce((total, product)=> total + product.quantity || 1 ,0);
+    console.log(cart[0]);
 
     const tax = (totalPrice * 0.1).toFixed(2);
     

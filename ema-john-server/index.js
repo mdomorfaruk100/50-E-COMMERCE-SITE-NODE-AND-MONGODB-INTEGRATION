@@ -33,14 +33,22 @@ client.connect().then(connectedClient => {
     app.get('/products', (req, res) => {
         productCollection.find().toArray()
         .then(documents => {
-            res.json(documents);
+            res.send(documents);
         })
     });
 
     app.get('/product/:key', (req, res) => {
         productCollection.find({key: req.params.key}).toArray()
         .then(documents => {
-            res.json(documents[0])
+            res.send(documents[0])
+        })
+    })
+
+    app.post('/productsByKeys', (req, res) => {
+        const productKeys = req.body;
+        productCollection.find({key: {$in : productKeys}})
+        .toArray().then(documents => {
+            res.send(documents)
         })
     })
 })
