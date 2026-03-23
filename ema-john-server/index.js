@@ -24,7 +24,9 @@ const client = new MongoClient(uri, {
 
 client.connect().then(connectedClient => {
     const productCollection = client.db(process.env.DB_NAME).collection("products");
+    const ordersCollection = client.db(process.env.DB_NAME).collection("orders");
 
+    
     app.post('/addProduct', (req, res) => {
         const products = req.body;
         productCollection.insertMany(products)
@@ -32,26 +34,36 @@ client.connect().then(connectedClient => {
             res.send(result);
         })
     })
-
+    
     app.get('/products', (req, res) => {
         productCollection.find().toArray()
         .then(documents => {
             res.send(documents);
         })
     });
-
+    
     app.get('/product/:key', (req, res) => {
         productCollection.find({key: req.params.key}).toArray()
         .then(documents => {
             res.send(documents[0])
         })
     })
-
+    
     app.post('/productsByKeys', (req, res) => {
         const productKeys = req.body;
         productCollection.find({key: {$in : productKeys}})
         .toArray().then(documents => {
             res.send(documents)
+        })
+    })
+
+    app.post("/addOrder", (req, res) => {
+        const orders = req.body;
+        ordersCollection.insertOne(orders)
+        .then(result => {
+            if(result.insertedId){
+                res.send(result);
+            }
         })
     })
 })

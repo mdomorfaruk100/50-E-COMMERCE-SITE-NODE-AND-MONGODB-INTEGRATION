@@ -2,11 +2,26 @@ import { useForm } from 'react-hook-form';
 import './Shipment.css';
 import { useContext } from 'react';
 import {UserContext} from '../../App';
+import { getDataBaseCart, proceedOrder } from '../../utilities/fakedb';
 
 const Shipment = () => {
     const {register, handleSubmit, watch, formState: {errors}} = useForm();
     const [loggedInUser] = useContext(UserContext);
-    const onSubmit = data => console.log('form submitted: ', data);
+    const onSubmit = data => {
+        const savedCart = getDataBaseCart();
+        const orderDetails = {...loggedInUser, products: savedCart, shipment: data, orderTime: new Date()};
+        fetch("http://localhost:3000/addOrder", {
+            method: "POST",
+            body: JSON.stringify(orderDetails),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json())
+        .then(data => {
+            alert('Your order placed successfully!');
+            proceedOrder();
+        })
+    };
     return (
         <div>
             <form className='ship-form' onSubmit={handleSubmit(onSubmit)}>
