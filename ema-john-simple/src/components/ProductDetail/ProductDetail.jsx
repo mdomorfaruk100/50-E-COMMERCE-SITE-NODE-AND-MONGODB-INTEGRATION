@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import fakeData from '../../fakeData/fakeData';
 import Product from '../Product/Product';
 
 const ProductDetail = () => {
     const {key} = useParams();
-    const product = fakeData.find(product => product.key === key);
-    // const [product, setProduct] = useState({});
-    useEffect(()=>{
-        fetch("/src/fakeData/fakeData.json").then(res => res.json())
-        .then(data => console.log(data))
-        // const loadedProduct = fakeData.find(product => product.key === key);
-        // setProduct(loadedProduct);
-    }, []);
+    const [product, setProduct] = useState({});
+    useEffect(() => {
+        fetch('http://localhost:3000/product/'+key)
+        .then(res => res.json())
+        .then(data => {
+            setProduct(data)
+        })
+    }, [key]);
 
     return (
         <div>

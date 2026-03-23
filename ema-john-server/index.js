@@ -29,6 +29,20 @@ client.connect().then(connectedClient => {
             res.send(result);
         })
     })
+
+    app.get('/products', (req, res) => {
+        productCollection.find().toArray()
+        .then(documents => {
+            res.json(documents);
+        })
+    });
+
+    app.get('/product/:key', (req, res) => {
+        productCollection.find({key: req.params.key}).toArray()
+        .then(documents => {
+            res.json(documents[0])
+        })
+    })
 })
 
 console.log(process.env.DB_USER);

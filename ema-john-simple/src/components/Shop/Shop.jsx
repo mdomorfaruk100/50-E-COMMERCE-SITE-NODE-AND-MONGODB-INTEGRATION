@@ -7,20 +7,29 @@ import { Link } from 'react-router';
 import { addToCart, getDataBaseCart } from '../../utilities/fakedb';
 
 const Shop = () => {
-    const product10 = fakeData.slice(0, 10);
+    const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:3000/products')
+        .then(res => res.json())
+        .then(data => {
+            setProducts(data);
+        })
+    }, []);
 
     useEffect(() => {
         const savedCart = getDataBaseCart();
         const productKeys = Object.keys(savedCart);
-        const products = productKeys.map(key => {
-            const product = fakeData.find(product => product.key === key);
-            product.quantity = savedCart[key];
-
+        if(products.length){
+                    const previousCart = productKeys.map(existingKey => {
+            const product = products.find(pd => pd.key === existingKey);
+            product.quantity = savedCart[existingKey];
             return product;
         })
-        setCart(products);
-    }, []);
+        setCart(previousCart)
+        }
+    }, [products]);
 
     const handleAddToCart = (product) => {
         const productKey = product.key;
@@ -44,7 +53,7 @@ const Shop = () => {
         <div className='twin-container'>
             <div className="product-container">
                 {
-                    product10.map(product => <Product key={product.key} showAddToCart={true} handleAddToCart={handleAddToCart} product={product} />)
+                    products.map(product => <Product key={product.key} showAddToCart={true} handleAddToCart={handleAddToCart} product={product} />)
                 }
             </div>
             <div className="cart-container">
